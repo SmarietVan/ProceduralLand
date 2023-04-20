@@ -7,10 +7,13 @@ public class MapGenerator : MonoBehaviour
 	public enum DrawMode
 	{
 		NoiseMap,
-		ColourMap
+		ColourMap,
+		Mesh
 	};
 
 	public DrawMode drawMode;
+
+	const int mapChunkSize = 241;
 
 	public int mapWidth;
 	public int mapHeight;
@@ -23,6 +26,9 @@ public class MapGenerator : MonoBehaviour
 
 	public int seed;
 	public Vector2 offset;
+
+	public float meshHeightMultiplier;
+	public AnimationCurve meshHeightCurve;
 
 	public bool autoUpdate;
 
@@ -56,7 +62,10 @@ public class MapGenerator : MonoBehaviour
 		}else if (drawMode == DrawMode.ColourMap)
 		{
 			display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, mapWidth, mapHeight));
-
+		}else if (drawMode == DrawMode.Mesh)
+		{
+			display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve),
+				TextureGenerator.TextureFromColourMap(colourMap, mapWidth, mapHeight));
 		}
 	}
 
